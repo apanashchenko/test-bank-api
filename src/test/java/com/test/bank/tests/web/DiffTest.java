@@ -30,4 +30,6 @@ public class DiffTest {
             System.out.println("|" + row.getOldLine() + "|" + row.getNewLine() + "|");
         }
     }
+
+
 }
