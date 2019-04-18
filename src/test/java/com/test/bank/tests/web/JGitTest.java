@@ -3,6 +3,10 @@ package com.test.bank.tests.web;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
@@ -19,24 +23,24 @@ public class JGitTest {
 
         final String dir = System.getProperty("user.dir") + "/test_bank_repo";
 
-        File repo = new File(dir);
+        File repo = new File(dir + "/.git");
 
         System.out.println("Dir " + dir);
 
-//        Git.cloneRepository()
-//                .setURI("https://github.com/SergeyPirogov/test-bank.git")
-//                .setDirectory(repo)
+        Git git = Git.open(repo);
+
+//        Ref ref = git.checkout().setCreateBranch(true)
+//                .setName("new-branch")
 //                .call();
 
-        PullResult call = Git.open(repo)
-                .pull()
-                .call();
+        File myFile = new File(git.getRepository().getDirectory().getParent(), "testfile");
 
-        System.out.println(call.isSuccessful());
+        myFile.createNewFile();
 
-        Yaml yaml = new Yaml();
-        InputStream inputStream = new FileInputStream(repo + "/user.yml");
-        Map<String, Object> obj = yaml.load(inputStream);
-        System.out.println(obj);
+        git.add().addFilepattern("testfile").call();
+
+        git.commit().setMessage("test file added").call();
+
+        git.push().setCredentialsProvider(new UsernamePasswordCredentialsProvider("SergeyPirogov", "Semen4ik20#1234")).call();
     }
 }
