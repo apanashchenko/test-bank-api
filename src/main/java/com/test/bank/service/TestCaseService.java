@@ -9,7 +9,6 @@ import com.test.bank.proxy.GitHubService;
 import com.test.bank.repository.TestCaseRepository;
 import com.test.bank.response.TestCaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,8 +29,7 @@ public class TestCaseService {
     public TestCase addTestCase(Long id, TestCaseDTO testCaseDTO) {
         Project project = projectsService.findProjectById(id).get();
         TestCase testCase = testCaseMapper.toTestCase(testCaseDTO);
-
-        GithubTestCaseDto githubTestCaseDto = convertToGithubTestCaseDto(project, testCaseDTO);
+        GithubTestCaseDto githubTestCaseDto = testCaseMapper.toGithubTestCaseDto(project, testCaseDTO);
 
         TestCaseResponse testCaseResponse = gitHubService.createTestCase(githubTestCaseDto);
 
@@ -57,19 +55,4 @@ public class TestCaseService {
     public Optional<TestCase> getTestCaseById(Long id) {
         return testCaseRepository.findById(id);
     }
-
-    private GithubTestCaseDto convertToGithubTestCaseDto(Project project, TestCaseDTO testCaseDTO) {
-        GithubTestCaseDto githubTestCaseDto = new GithubTestCaseDto();
-        githubTestCaseDto.setTitle(testCaseDTO.getTitle());
-        githubTestCaseDto.setUserName(testCaseDTO.getChangedBy());
-        githubTestCaseDto.setEmail(testCaseDTO.getChangedBy());
-
-        String title = testCaseDTO.getTitle().toLowerCase().replace(" ", "-");
-
-        githubTestCaseDto.setFileName(title);
-        githubTestCaseDto.setBranch(title);
-        githubTestCaseDto.setRepoName(project.getRepoName());
-        return githubTestCaseDto;
-    }
-
 }
