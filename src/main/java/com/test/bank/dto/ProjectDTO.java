@@ -19,4 +19,8 @@ public class ProjectDTO {
     String name;
     @ApiModelProperty(example = "false")
     boolean deleted;
+    @ApiModelProperty(example = "Test project description")
+    private String description;
+    @ApiModelProperty(example = "false")
+    boolean isPrivate = false;
 }

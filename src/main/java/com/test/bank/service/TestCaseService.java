@@ -2,11 +2,9 @@ package com.test.bank.service;
 
 import com.test.bank.dto.TestCaseDTO;
 import com.test.bank.mapper.TestCaseMapper;
-import com.test.bank.model.Diff;
 import com.test.bank.model.Project;
 import com.test.bank.model.TestCase;
 import com.test.bank.repository.TestCaseRepository;
-import com.test.bank.utils.DiffExtractor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +25,6 @@ public class TestCaseService {
     public TestCase addTestCase(Long id, TestCaseDTO testCaseDTO) {
         Project project = projectsService.findProjectById(id).get();
         TestCase testCase = testCaseMapper.toTestCase(testCaseDTO);
-        Diff diff = DiffExtractor.of(new TestCase(), testCase);
-
-        testCase.setDiff(diff);
 
         project.addTestCase(testCase);
 
@@ -44,12 +39,12 @@ public class TestCaseService {
         TestCase oldTestCase = testCaseRepository.findById(id).get();
 
         TestCase newTestCase = testCaseMapper.toTestCase(newTestCaseDTO);
-
-        Diff diff = DiffExtractor.of(oldTestCase, newTestCase);
-
-        newTestCase.setId(oldTestCase.getId());
-
-        newTestCase.setDiff(diff);
+//
+//        Diff diff = DiffExtractor.of(oldTestCase, newTestCase);
+//
+//        newTestCase.setId(oldTestCase.getId());
+//
+//        newTestCase.setDiff(diff);
 
         return testCaseRepository.save(newTestCase);
     }

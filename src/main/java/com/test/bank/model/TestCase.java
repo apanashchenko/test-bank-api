@@ -31,7 +31,4 @@ public class TestCase {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "episodeId")
     private Project project;
-
-    @OneToOne(cascade = {CascadeType.ALL})
-    private Diff diff;
 }

@@ -1,8 +1,10 @@
 package com.test.bank.service;
 
+import com.test.bank.response.InitRepoResponse;
 import com.test.bank.dto.ProjectDTO;
 import com.test.bank.mapper.ProjectMapper;
 import com.test.bank.model.Project;
+import com.test.bank.proxy.GitHubService;
 import com.test.bank.repository.ProjectsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,15 @@ public class ProjectsService {
 
     private final ProjectsRepository projectsRepository;
     private final ProjectMapper projectMapper;
+    private final GitHubService gitHubService;
 
     public Long addProject(ProjectDTO projectDTO) {
         Project project = projectMapper.toProject(projectDTO);
+
+        InitRepoResponse initRepoResponse = gitHubService.initProjectRepo(projectDTO);
+
+        project.setRepoName(initRepoResponse.getName());
+
         return projectsRepository.save(project).getId();
     }
 

@@ -1,6 +1,5 @@
 package com.test.bank.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +19,9 @@ public class Project {
     @Column(unique = true)
     private String name;
     private boolean deleted;
+    private String description;
+    private boolean isPrivate;
+    private String repoName;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "projectToCase",

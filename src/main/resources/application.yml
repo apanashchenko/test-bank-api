@@ -4,7 +4,7 @@ spring:
 
 ---
 spring:
-  profiles: dev
+  profiles: prod
   datasource:
     username: ${DATABASE_USER}
     password: ${MYSQL_ROOT_PASSWORD}
@@ -16,12 +16,21 @@ spring:
 
 ---
 spring:
-  profiles: prod
+  profiles: dev
   datasource:
     username: root
     password: admin
-    url: jdbc:mysql://mysql:3306/test_bank
+    url: jdbc:mysql://localhost:3306/test_bank
   jpa:
     hibernate:
       ddl-auto: update
     database: mysql
+
+server:
+    port: 8080
+
+githubService:
+    ribbon:
+      ReadTimeout: 10000
+      listOfServers: localhost:8088
+
