@@ -24,6 +24,7 @@ public class TestCase {
     private String labels;
     private String status;
     private String changedBy;
+    private String path;
 
     private Date createdAt = new Date();
 
