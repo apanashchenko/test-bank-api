@@ -23,17 +23,10 @@ public class TestCaseService {
     private final TestCaseRepository testCaseRepository;
     private final ProjectsService projectsService;
     private final TestCaseMapper testCaseMapper;
-    private final GitHubService gitHubService;
-
 
     public TestCase addTestCase(Long id, TestCaseDTO testCaseDTO) {
         Project project = projectsService.findProjectById(id).get();
         TestCase testCase = testCaseMapper.toTestCase(testCaseDTO);
-        GithubTestCaseDto githubTestCaseDto = testCaseMapper.toGithubTestCaseDto(project, testCaseDTO);
-
-        TestCaseResponse testCaseResponse = gitHubService.createTestCase(githubTestCaseDto);
-
-        testCase.setPath(testCaseResponse.getPath());
 
         project.addTestCase(testCase);
 
@@ -45,8 +38,6 @@ public class TestCaseService {
     }
 
     public TestCase updateTestCase(Long id, TestCaseDTO newTestCaseDTO) {
-        TestCase oldTestCase = testCaseRepository.findById(id).get();
-
         TestCase newTestCase = testCaseMapper.toTestCase(newTestCaseDTO);
 
         return testCaseRepository.save(newTestCase);
