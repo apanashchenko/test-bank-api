@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.test.bank.dto.PullRequestDTO;
+import com.test.bank.model.Project;
 import com.test.bank.model.TestCase;
 import com.test.bank.payload.CreatePullRequestPayload;
 import com.test.bank.proxy.GitHubService;
@@ -23,7 +24,13 @@ public class PullRequestService {
     public Object createPullRequest(CreatePullRequestPayload createPullRequestPayload) {
         Long testCaseId = createPullRequestPayload.getTestCaseId();
         TestCase testCase = testCaseService.getTestCaseById(testCaseId).get();
+        Project project = testCase.getProject();
 
+        String branchAndFileName = testCase.getTitle().toLowerCase().replace(" ", "-");
+
+        createPullRequestPayload.setBranch(branchAndFileName);
+        createPullRequestPayload.setRepoName(project.getRepoName());
+        createPullRequestPayload.setPath(branchAndFileName);
         createPullRequestPayload.setContent(toYaml(testCase));
 
         gitHubService.createTestCase(createPullRequestPayload);
