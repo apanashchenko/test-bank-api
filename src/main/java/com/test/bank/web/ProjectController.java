@@ -1,6 +1,5 @@
 package com.test.bank.web;
 
-import com.test.bank.model.Project;
 import com.test.bank.dto.ProjectDTO;
 import com.test.bank.service.ProjectsService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import java.util.Map;
+import java.util.List;
 
 import static java.util.Collections.singletonMap;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -29,7 +28,7 @@ public class ProjectController {
     }
 
     @GetMapping(value = "/projects")
-    public Iterable<Project> getAllProjects() {
+    public List<ProjectDTO> getAllProjects() {
         return projectsService.getAllProjects();
     }
 

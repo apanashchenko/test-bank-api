@@ -3,6 +3,8 @@ package com.test.bank.mapper;
 import com.test.bank.model.Project;
 import com.test.bank.dto.ProjectDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
@@ -11,4 +13,5 @@ public interface ProjectMapper {
 
     ProjectDTO toProjectDto(Project project);
     Project toProject(ProjectDTO projectDTO);
+
 }

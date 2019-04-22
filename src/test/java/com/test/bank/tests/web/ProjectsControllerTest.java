@@ -78,7 +78,7 @@ public class ProjectsControllerTest {
 
     @Test
     public void testCanGetAllProjects() throws Exception {
-        Project project = new Project();
+        ProjectDTO project = new ProjectDTO();
         project.setId(1L);
         project.setName("Demo");
 

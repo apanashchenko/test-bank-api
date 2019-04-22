@@ -19,7 +19,7 @@ public interface TestCaseMapper {
             @Mapping(target="userName", source="testCaseDTO.changedBy"),
             @Mapping(target="email", source="testCaseDTO.changedBy"),
             @Mapping(target="fileName", expression = "java(createFileName(testCaseDTO.getTitle()))"),
-            @Mapping(target="branch", expression = "java(createFileName.getTitle())"),
+            @Mapping(target="branch", expression = "java(createFileName(testCaseDTO.getTitle()))"),
             @Mapping(target="repoName", source="project.repoName")
     })
     GithubTestCaseDto toGithubTestCaseDto(Project project, TestCaseDTO testCaseDTO);

@@ -13,6 +13,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class ProjectDTO {
 
+    @ApiModelProperty(hidden = true)
+    Long id;
     @ApiModelProperty(example = "Test project")
     @Column(unique = true)
     @NotBlank
