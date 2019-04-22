@@ -2,6 +2,7 @@ package com.test.bank.mapper;
 
 import com.test.bank.model.Project;
 import com.test.bank.dto.ProjectDTO;
+import com.test.bank.payload.CreateProjectPayload;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -12,6 +13,6 @@ public interface ProjectMapper {
     ProjectMapper MAPPER = Mappers.getMapper(ProjectMapper.class);
 
     ProjectDTO toProjectDto(Project project);
-    Project toProject(ProjectDTO projectDTO);
+    Project toProject(CreateProjectPayload projectDTO);
 
 }

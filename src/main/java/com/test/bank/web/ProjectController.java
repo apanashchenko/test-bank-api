@@ -1,6 +1,7 @@
 package com.test.bank.web;
 
 import com.test.bank.dto.ProjectDTO;
+import com.test.bank.payload.CreateProjectPayload;
 import com.test.bank.service.ProjectsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class ProjectController {
     private final ProjectsService projectsService;
 
     @PostMapping("/project")
-    public ResponseEntity createProject(@Valid @RequestBody ProjectDTO project) {
+    public ResponseEntity createProject(@Valid @RequestBody CreateProjectPayload project) {
         return new ResponseEntity<>(singletonMap(ID_KEY, projectsService.addProject(project)), OK);
     }
 

@@ -1,4 +1,4 @@
-package com.test.bank.dto;
+package com.test.bank.payload;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -11,9 +11,8 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProjectDTO {
+public class CreateProjectPayload {
 
-    Long id;
     @ApiModelProperty(example = "Test project")
     @Column(unique = true)
     @NotBlank
@@ -22,6 +21,6 @@ public class ProjectDTO {
     boolean deleted;
     @ApiModelProperty(example = "Test project description")
     private String description;
-    @ApiModelProperty(example = "false")
-    boolean isPrivate = false;
+    @ApiModelProperty(example = "true")
+    boolean isPrivate = true;
 }

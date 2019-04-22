@@ -1,5 +1,6 @@
 package com.test.bank.service;
 
+import com.test.bank.payload.CreateProjectPayload;
 import com.test.bank.response.InitRepoResponse;
 import com.test.bank.dto.ProjectDTO;
 import com.test.bank.mapper.ProjectMapper;
@@ -26,14 +27,19 @@ public class ProjectsService {
     private final ProjectMapper projectMapper;
     private final GitHubService gitHubService;
 
-    public Long addProject(ProjectDTO projectDTO) {
-        Project project = projectMapper.toProject(projectDTO);
+    public Long addProject(CreateProjectPayload projectPayload) {
+        System.out.println("About to create project " + projectPayload.getName());
 
-        InitRepoResponse initRepoResponse = gitHubService.initProjectRepo(projectDTO);
+        Project project = projectMapper.toProject(projectPayload);
+
+        InitRepoResponse initRepoResponse = gitHubService.initProjectRepo(projectPayload);
 
         project.setRepoName(initRepoResponse.getName());
 
-        return projectsRepository.save(project).getId();
+        Long id = projectsRepository.save(project).getId();
+
+        System.out.println("Project created " + id);
+        return id;
     }
 
     public List<ProjectDTO> getAllProjects() {
