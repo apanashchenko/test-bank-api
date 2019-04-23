@@ -1,13 +1,10 @@
 package com.test.bank.service;
 
-import com.test.bank.dto.GithubTestCaseDto;
 import com.test.bank.dto.TestCaseDTO;
 import com.test.bank.mapper.TestCaseMapper;
 import com.test.bank.model.Project;
 import com.test.bank.model.TestCase;
-import com.test.bank.proxy.GitHubService;
 import com.test.bank.repository.TestCaseRepository;
-import com.test.bank.response.TestCaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +34,7 @@ public class TestCaseService {
         return testCaseRepository.findAllByProjectId(id);
     }
 
-    public TestCase updateTestCase(Long id, TestCaseDTO newTestCaseDTO) {
+    public TestCase updateTestCase(TestCaseDTO newTestCaseDTO) {
         TestCase newTestCase = testCaseMapper.toTestCase(newTestCaseDTO);
 
         return testCaseRepository.save(newTestCase);

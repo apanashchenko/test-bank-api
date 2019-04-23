@@ -9,9 +9,14 @@ import com.test.bank.model.Project;
 import com.test.bank.model.TestCase;
 import com.test.bank.payload.CreatePullRequestPayload;
 import com.test.bank.proxy.GitHubService;
+import com.test.bank.repository.TestCaseRepository;
+import com.test.bank.response.GetTestCaseResponse;
+import com.test.bank.response.PullRequestMergeResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -21,14 +26,20 @@ public class PullRequestService {
 
     private final GitHubService gitHubService;
     private final TestCaseService testCaseService;
+    private final TestCaseRepository testCaseRepository;
+
+    @Value("${fileExtension}")
+    private String fileExtension;
+
+    private final ObjectMapper ymlMapper = new ObjectMapper(new YAMLFactory());
 
     public Object createPullRequest(CreatePullRequestPayload createPullRequestPayload) {
         Long testCaseId = createPullRequestPayload.getTestCaseId();
         TestCase testCase = testCaseService.getTestCaseById(testCaseId).get();
         Project project = testCase.getProject();
 
-        String fileName = testCase.getTitle().toLowerCase().replace(" ", "-");
-        String branchName = String.format("test-case-%s-%s",testCase.getId(), UUID.randomUUID());
+        String fileName = testCase.getId() + fileExtension;
+        String branchName = String.format("test-case-%s-%s", testCase.getId(), UUID.randomUUID());
 
         createPullRequestPayload.setBranch(branchName);
         createPullRequestPayload.setRepoName(project.getRepoName());
@@ -44,10 +55,9 @@ public class PullRequestService {
     }
 
     private String toYaml(TestCase testCase) {
-        ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
         byte[] bytes;
         try {
-            bytes = objectMapper.writeValueAsBytes(testCase);
+            bytes = ymlMapper.writeValueAsBytes(testCase);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -55,7 +65,24 @@ public class PullRequestService {
         return Base64.getEncoder().encodeToString(bytes);
     }
 
-    public Object mergePullRequest(MergeRequestDTO mergeRequestDTO) {
-        return gitHubService.mergePullRequest(mergeRequestDTO);
+    public boolean mergePullRequest(MergeRequestDTO mergeRequestDTO) {
+        PullRequestMergeResponse response = gitHubService.mergePullRequest(mergeRequestDTO);
+
+        if ("SUCCESS".equals(response.getState())) {
+            GetTestCaseResponse testCaseResponse = gitHubService.getTestCase(mergeRequestDTO.getRepoName(), mergeRequestDTO.getId() + fileExtension);
+            TestCase testCase = extractTestCase(testCaseResponse);
+            testCaseRepository.save(testCase);
+            return true;
+        }
+
+        return false;
+    }
+
+    private TestCase extractTestCase(GetTestCaseResponse response) {
+        try {
+            return ymlMapper.readValue(Base64.getDecoder().decode(response.getContent()), TestCase.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

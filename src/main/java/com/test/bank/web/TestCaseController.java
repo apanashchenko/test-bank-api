@@ -24,17 +24,17 @@ public class TestCaseController {
     }
 
     @GetMapping("/project/{id}/cases")
-    public List<TestCase> getAllTestCases(@PathVariable Long id){
+    public List<TestCase> getAllTestCases(@PathVariable Long id) {
         return testCaseService.getAllTestCases(id);
     }
 
-    @PutMapping("/case/{id}")
-    public TestCase updateTestCase(@PathVariable Long id, @RequestBody TestCaseDTO testCaseDTO){
-        return testCaseService.updateTestCase(id, testCaseDTO);
+    @PutMapping("/case")
+    public TestCase updateTestCase(@RequestBody TestCaseDTO testCaseDTO) {
+        return testCaseService.updateTestCase(testCaseDTO);
     }
 
     @GetMapping("/case/{id}")
-    public TestCase getTestCaseById(@PathVariable Long id){
+    public TestCase getTestCaseById(@PathVariable Long id) {
         return testCaseService.getTestCaseById(id).get();
     }
 }

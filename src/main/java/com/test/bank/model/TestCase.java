@@ -11,6 +11,10 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+@Table(
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"projectId", "title"})
+)
 @NoArgsConstructor
 public class TestCase {
 
@@ -18,17 +22,18 @@ public class TestCase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String title;
     private String reference;
     private String labels;
     private String status;
     private String changedBy;
+    @Column(updatable = false, insertable = false)
+    private Long projectId;
 
     private Date createdAt = new Date();
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "episodeId")
+    @JoinColumn(name = "projectId")
     private Project project;
 }
