@@ -3,6 +3,7 @@ package com.test.bank.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.test.bank.dto.MergeRequestDTO;
 import com.test.bank.dto.PullRequestDTO;
 import com.test.bank.model.Project;
 import com.test.bank.model.TestCase;
@@ -51,5 +52,9 @@ public class PullRequestService {
         }
 
         return Base64.getEncoder().encodeToString(bytes);
+    }
+
+    public Object mergePullRequest(MergeRequestDTO mergeRequestDTO) {
+        return gitHubService.mergePullRequest(mergeRequestDTO);
     }
 }
