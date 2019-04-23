@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +27,12 @@ public class PullRequestService {
         TestCase testCase = testCaseService.getTestCaseById(testCaseId).get();
         Project project = testCase.getProject();
 
-        String branchAndFileName = testCase.getTitle().toLowerCase().replace(" ", "-");
+        String fileName = testCase.getTitle().toLowerCase().replace(" ", "-");
+        String branchName = String.format("test-case-%s-%s",testCase.getId(), UUID.randomUUID());
 
-        createPullRequestPayload.setBranch(branchAndFileName);
+        createPullRequestPayload.setBranch(branchName);
         createPullRequestPayload.setRepoName(project.getRepoName());
-        createPullRequestPayload.setPath(branchAndFileName);
+        createPullRequestPayload.setPath(fileName);
         createPullRequestPayload.setContent(toYaml(testCase));
 
         gitHubService.createTestCase(createPullRequestPayload);
