@@ -1,5 +1,6 @@
 package com.test.bank.proxy;
 
+import com.test.bank.dto.MergeRequestDTO;
 import com.test.bank.dto.PullRequestDTO;
 import com.test.bank.payload.CreateProjectPayload;
 import com.test.bank.payload.CreatePullRequestPayload;
@@ -21,4 +22,7 @@ public interface GitHubService {
 
     @RequestMapping(value = "/pull-request", method = RequestMethod.POST)
     Object createPullRequest(PullRequestDTO pullRequestDTO);
+
+    @RequestMapping(value = "/pull-request/merge", method = RequestMethod.POST)
+    Object mergePullRequest(MergeRequestDTO id);
 }
