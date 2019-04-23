@@ -68,9 +68,14 @@ public class PullRequestService {
     public boolean mergePullRequest(MergeRequestDTO mergeRequestDTO) {
         PullRequestMergeResponse response = gitHubService.mergePullRequest(mergeRequestDTO);
 
+        Project project = testCaseRepository.findById(mergeRequestDTO.getId()).get().getProject();
+
         if ("SUCCESS".equals(response.getState())) {
             GetTestCaseResponse testCaseResponse = gitHubService.getTestCase(mergeRequestDTO.getRepoName(), mergeRequestDTO.getId() + fileExtension);
             TestCase testCase = extractTestCase(testCaseResponse);
+            testCase.setReviewRequired(false);
+            testCase.setProject(project);
+
             testCaseRepository.save(testCase);
             return true;
         }
@@ -80,7 +85,7 @@ public class PullRequestService {
 
     private TestCase extractTestCase(GetTestCaseResponse response) {
         try {
-            return ymlMapper.readValue(Base64.getDecoder().decode(response.getContent()), TestCase.class);
+            return ymlMapper.readValue(response.getContent(), TestCase.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

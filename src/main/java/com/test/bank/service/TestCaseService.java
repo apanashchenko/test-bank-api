@@ -25,6 +25,7 @@ public class TestCaseService {
         Project project = projectsService.findProjectById(id).get();
         TestCase testCase = testCaseMapper.toTestCase(testCaseDTO);
 
+        testCase.setReviewRequired(true);
         project.addTestCase(testCase);
 
         return testCase;

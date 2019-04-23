@@ -29,7 +29,7 @@ public class TestCase {
     private String changedBy;
     @Column(updatable = false, insertable = false)
     private Long projectId;
-
+    private boolean reviewRequired;
     private Date createdAt = new Date();
 
     @JsonIgnore
