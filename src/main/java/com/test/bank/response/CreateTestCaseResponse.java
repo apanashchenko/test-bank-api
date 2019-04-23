@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TestCaseResponse {
+public class CreateTestCaseResponse {
 
     private String path;
 

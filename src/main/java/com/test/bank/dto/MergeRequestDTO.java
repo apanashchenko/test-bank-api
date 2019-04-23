@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class MergeRequestDTO {
 
-    private int id;
+    private Long id;
     public String repoName;
 }
