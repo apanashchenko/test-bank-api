@@ -73,7 +73,7 @@ public class PullRequestService {
         if ("SUCCESS".equals(response.getState())) {
             GetTestCaseResponse testCaseResponse = gitHubService.getTestCase(mergeRequestDTO.getRepoName(), mergeRequestDTO.getId() + fileExtension);
             TestCase testCase = extractTestCase(testCaseResponse);
-
+            testCase.setReviewRequired(false);
             testCase.setProject(project);
 
             testCaseRepository.save(testCase);
