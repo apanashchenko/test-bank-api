@@ -2,6 +2,7 @@ package com.test.bank;
 
 import io.swagger.client.ApiClient;
 import io.swagger.client.api.ProjectControllerApi;
+import io.swagger.client.api.TestCaseControllerApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,4 +21,8 @@ public class ProjectConfig {
         return apiClient().buildClient(ProjectControllerApi.class);
     }
 
+    @Bean
+    public TestCaseControllerApi testCaseControllerApi(){
+        return apiClient().buildClient(TestCaseControllerApi.class);
+    }
 }
