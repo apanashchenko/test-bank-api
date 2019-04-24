@@ -39,16 +39,7 @@ public class PullRequestService {
 //        return gitHubService.createPullRequest(pullRequestDTO);
 //    }
 //
-//    private String toYaml(TestCase testCase) {
-//        byte[] bytes;
-//        try {
-//            bytes = ymlMapper.writeValueAsBytes(testCase);
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
 //
-//        return Base64.getEncoder().encodeToString(bytes);
-//    }
 //
 //    public boolean mergePullRequest(MergeRequestDTO mergeRequestDTO) {
 //        PullRequestMergeResponse response = gitHubService.mergePullRequest(mergeRequestDTO);
