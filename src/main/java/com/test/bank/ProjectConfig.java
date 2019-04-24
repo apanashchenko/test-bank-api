@@ -1,8 +1,9 @@
 package com.test.bank;
 
 import io.swagger.client.ApiClient;
+import io.swagger.client.api.FileControllerApi;
 import io.swagger.client.api.ProjectControllerApi;
-import io.swagger.client.api.TestCaseControllerApi;
+import io.swagger.client.api.PullRequestsControllerApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,7 +23,12 @@ public class ProjectConfig {
     }
 
     @Bean
-    public TestCaseControllerApi testCaseControllerApi(){
-        return apiClient().buildClient(TestCaseControllerApi.class);
+    public FileControllerApi fileService() {
+        return apiClient().buildClient(FileControllerApi.class);
+    }
+
+    @Bean
+    public PullRequestsControllerApi pullRequestService() {
+        return apiClient().buildClient(PullRequestsControllerApi.class);
     }
 }
