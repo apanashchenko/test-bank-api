@@ -1,6 +1,7 @@
 package com.test.bank.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.test.bank.enums.TestCaseStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,11 +26,10 @@ public class TestCase {
     private String title;
     private String reference;
     private String labels;
-    private String status;
+    private TestCaseStatus status;
     private String changedBy;
     @Column(updatable = false, insertable = false)
     private Long projectId;
-    private boolean reviewRequired;
     private Date createdAt = new Date();
 
     @JsonIgnore

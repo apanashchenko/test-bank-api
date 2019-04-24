@@ -1,21 +1,19 @@
 package com.test.bank.web;
 
-import com.test.bank.dto.ProjectDTO;
-import com.test.bank.payload.CreateProjectPayload;
 import com.test.bank.service.ProjectsService;
+import io.swagger.client.model.ProjectDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.List;
 
+import static com.test.bank.ControllerKeyConstants.ID_KEY;
+import static com.test.bank.ControllerKeyConstants.STATUS_KEY;
 import static java.util.Collections.singletonMap;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
-import static com.test.bank.ControllerKeyConstants.ID_KEY;
-import static com.test.bank.ControllerKeyConstants.STATUS_KEY;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +22,7 @@ public class ProjectController {
     private final ProjectsService projectsService;
 
     @PostMapping("/project")
-    public ResponseEntity createProject(@Valid @RequestBody CreateProjectPayload project) {
+    public ResponseEntity createProject(@Valid @RequestBody ProjectDTO project) {
         return new ResponseEntity<>(singletonMap(ID_KEY, projectsService.addProject(project)), OK);
     }
 

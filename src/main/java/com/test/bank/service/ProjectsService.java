@@ -1,21 +1,19 @@
 package com.test.bank.service;
 
-import com.test.bank.payload.CreateProjectPayload;
-import com.test.bank.response.InitRepoResponse;
-import com.test.bank.dto.ProjectDTO;
 import com.test.bank.mapper.ProjectMapper;
 import com.test.bank.model.Project;
-import com.test.bank.proxy.GitHubService;
 import com.test.bank.repository.ProjectsRepository;
+import com.test.bank.response.InitRepoResponse;
+import io.swagger.client.api.ProjectControllerApi;
+import io.swagger.client.model.InitProjectResponse;
+import io.swagger.client.model.ProjectDTO;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.fileupload.util.Streams;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -25,14 +23,14 @@ public class ProjectsService {
 
     private final ProjectsRepository projectsRepository;
     private final ProjectMapper projectMapper;
-    private final GitHubService gitHubService;
+    private final ProjectControllerApi githubService;
 
-    public Long addProject(CreateProjectPayload projectPayload) {
+    public Long addProject(ProjectDTO projectPayload) {
         System.out.println("About to create project " + projectPayload.getName());
 
         Project project = projectMapper.toProject(projectPayload);
 
-        InitRepoResponse initRepoResponse = gitHubService.initProjectRepo(projectPayload);
+        InitProjectResponse initRepoResponse = githubService.initProjectUsingPOST(projectPayload);
 
         project.setRepoName(initRepoResponse.getName());
 
