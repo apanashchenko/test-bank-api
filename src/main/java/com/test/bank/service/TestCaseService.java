@@ -62,7 +62,7 @@ public class TestCaseService {
         CreateFilePayload createFilePayload = new CreateFilePayload()
                 .fileName(id + ".yml")
                 .message("Create file " + id)
-                .content(YamlUtils.toYaml(testCase))
+                .content(YamlUtils.toYaml(testCaseMapper.toTestCaseDTO(testCase)))
                 .committer(committer);
 
         FileDTO fileDTO = fileService.createFileUsingPOST(createFilePayload, projectName);
