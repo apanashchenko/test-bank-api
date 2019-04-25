@@ -52,4 +52,12 @@ public class TestCase {
         reviewList.add(review);
         review.setTestCase(this);
     }
+
+    public void removeReview(Long reviewId) {
+        Review review = reviewList.stream().filter(it -> it.getId().equals(reviewId))
+                .findFirst().get();
+
+        reviewList.remove(review);
+        review.setTestCase(null);
+    }
 }
