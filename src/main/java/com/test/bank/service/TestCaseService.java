@@ -1,11 +1,12 @@
 package com.test.bank.service;
 
-import com.test.bank.dto.ReviewDTO;
 import com.test.bank.enums.TestCaseStatus;
 import com.test.bank.mapper.TestCaseMapper;
 import com.test.bank.model.Project;
+import com.test.bank.model.Review;
 import com.test.bank.model.TestCase;
 import com.test.bank.payload.CreateTestCasePayload;
+import com.test.bank.repository.ReviewRepository;
 import com.test.bank.repository.TestCaseRepository;
 import com.test.bank.utils.YamlUtils;
 import io.swagger.client.api.FileControllerApi;
@@ -28,6 +29,7 @@ public class TestCaseService {
     private final TestCaseMapper testCaseMapper;
     private final FileControllerApi fileService;
     private final PullRequestsControllerApi pullRequestService;
+    private final ReviewRepository reviewRepository;
 
     public TestCase addTestCase(Long id, CreateTestCasePayload payload) {
         Project project = projectsService.findProjectById(id).get();
@@ -53,7 +55,7 @@ public class TestCaseService {
         return testCaseRepository.findById(id);
     }
 
-    public ReviewDTO promoteToReview(Long id, Committer committer) {
+    public Review promoteToReview(Long id, Committer committer) {
         TestCase testCase = testCaseRepository.findById(id).get();
         String projectName = testCase.getProject().getRepoName();
 
@@ -73,8 +75,15 @@ public class TestCaseService {
 
         testCase.setStatus(TestCaseStatus.ON_REVIEW);
 
-        Long testCaseId = testCaseRepository.save(testCase).getId();
+        testCaseRepository.save(testCase);
 
-        return ReviewDTO.of(testCaseId, fileDTO, pullRequest);
+        Review review = new Review();
+        review.setTestCase(testCase);
+        review.setDiff(pullRequest.getDiffText());
+        review.setPullRequestId(pullRequest.getId());
+
+        reviewRepository.save(review);
+
+        return review;
     }
 }

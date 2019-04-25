@@ -1,8 +1,9 @@
 package com.test.bank.web;
 
-import com.test.bank.dto.ReviewDTO;
+import com.test.bank.model.Review;
 import com.test.bank.model.TestCase;
 import com.test.bank.payload.CreateTestCasePayload;
+import com.test.bank.service.ReviewService;
 import com.test.bank.service.TestCaseService;
 import io.swagger.client.model.Committer;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import static java.util.Collections.singletonMap;
 public class TestCaseController {
 
     private final TestCaseService testCaseService;
+    private final ReviewService reviewService;
 
     @PostMapping("/project/{id}/case")
     public ResponseEntity addTestCase(@PathVariable Long id,
@@ -27,7 +29,7 @@ public class TestCaseController {
     }
 
     @PostMapping("/case/{id}/create-review")
-    public ReviewDTO promoteToReview(@PathVariable Long id, @RequestBody Committer committer) {
+    public Review promoteToReview(@PathVariable Long id, @RequestBody Committer committer) {
         return testCaseService.promoteToReview(id, committer);
     }
 
@@ -35,6 +37,13 @@ public class TestCaseController {
     public List<TestCase> getAllTestCases(@PathVariable Long id) {
         return testCaseService.getAllTestCases(id);
     }
+
+    @GetMapping("/case/{id}/reviews")
+    public Iterable<Review> getAllTestCaseReviews(@PathVariable Long id) {
+        return reviewService.getAllReviewsForTestCase(id);
+    }
+
+
 //
 //    @PutMapping("/case")
 //    public TestCase updateTestCase(@RequestBody TestCaseDTO testCaseDTO) {
