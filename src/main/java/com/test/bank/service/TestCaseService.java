@@ -82,6 +82,8 @@ public class TestCaseService {
         review.setDiff(pullRequest.getDiffText());
         review.setPullRequestId(pullRequest.getId());
 
+        testCase.addReview(review);
+
         reviewRepository.save(review);
 
         return review;

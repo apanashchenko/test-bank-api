@@ -1,22 +1,20 @@
 package com.test.bank.web;
 
+import com.test.bank.service.PullRequestsService;
+import io.swagger.client.model.PullRequestMergeResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class PullRequestController {
 
-//   private final PullRequestService pullRequestService;
+    private final PullRequestsService pullRequestService;
 
-//    @PostMapping("/pull-request")
-//    public Object createPullRequest(@RequestBody CreatePullRequestPayload createPullRequestPayload) {
-//        return pullRequestService.createPullRequest(createPullRequestPayload);
-//    }
-////
-//    @PostMapping("/pull-request/{id}/merge")
-//    public Object mergePullRequest(@PathVariable Long id) {
-//        boolean result = pullRequestService.mergePullRequest(mergeRequestDTO);
-//        return new ResponseEntity<>(Collections.singletonMap("merged", result), HttpStatus.OK);
-//    }
+    @PostMapping("/pull-request/{id}/merge")
+    public PullRequestMergeResponse mergePullRequest(@PathVariable Long id) {
+        return pullRequestService.mergePullRequest(id);
+    }
 }

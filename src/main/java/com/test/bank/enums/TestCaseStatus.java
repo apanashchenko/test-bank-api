@@ -3,6 +3,6 @@ package com.test.bank.enums;
 public enum TestCaseStatus {
 
     NEW,
-    REVIWED,
+    READY,
     ON_REVIEW,
 }
