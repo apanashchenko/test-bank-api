@@ -1,10 +1,10 @@
 package com.test.bank.web;
 
+import com.test.bank.dto.ReviewDTO;
 import com.test.bank.model.TestCase;
 import com.test.bank.payload.CreateTestCasePayload;
 import com.test.bank.service.TestCaseService;
 import io.swagger.client.model.Committer;
-import io.swagger.client.model.PullRequestResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ public class TestCaseController {
     }
 
     @PostMapping("/case/{id}/create-review")
-    public PullRequestResponse promoteToReview(@PathVariable Long id, @RequestBody Committer committer) {
+    public ReviewDTO promoteToReview(@PathVariable Long id, @RequestBody Committer committer) {
         return testCaseService.promoteToReview(id, committer);
     }
 

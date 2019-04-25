@@ -1,5 +1,6 @@
 package com.test.bank.service;
 
+import com.test.bank.dto.ReviewDTO;
 import com.test.bank.enums.TestCaseStatus;
 import com.test.bank.mapper.TestCaseMapper;
 import com.test.bank.model.Project;
@@ -52,7 +53,7 @@ public class TestCaseService {
         return testCaseRepository.findById(id);
     }
 
-    public PullRequestResponse promoteToReview(Long id, Committer committer) {
+    public ReviewDTO promoteToReview(Long id, Committer committer) {
         TestCase testCase = testCaseRepository.findById(id).get();
         String projectName = testCase.getProject().getRepoName();
 
@@ -72,8 +73,8 @@ public class TestCaseService {
 
         testCase.setStatus(TestCaseStatus.ON_REVIEW);
 
-        testCaseRepository.save(testCase);
+        Long testCaseId = testCaseRepository.save(testCase).getId();
 
-        return pullRequest;
+        return ReviewDTO.of(testCaseId, fileDTO, pullRequest);
     }
 }
