@@ -6,6 +6,7 @@ import com.test.bank.model.Project;
 import com.test.bank.model.Review;
 import com.test.bank.model.TestCase;
 import com.test.bank.payload.CreateTestCasePayload;
+import com.test.bank.payload.UpdateTestCasePayload;
 import com.test.bank.repository.ReviewRepository;
 import com.test.bank.repository.TestCaseRepository;
 import com.test.bank.utils.YamlUtils;
@@ -45,11 +46,34 @@ public class TestCaseService {
         return testCaseRepository.findAllByProjectId(id);
     }
 
-//    public TestCase updateTestCase(TestCaseDTO newTestCaseDTO) {
-//        TestCase newTestCase = testCaseMapper.toTestCase(newTestCaseDTO);
-//
-//        return testCaseRepository.save(newTestCase);
-//    }
+    public Review updateTestCase(Long testCaseId, UpdateTestCasePayload payload) {
+        TestCase testCase = testCaseRepository.findById(testCaseId).get();
+        testCase.setStatus(TestCaseStatus.ON_UPDATED);
+        testCaseRepository.save(testCase);
+
+        String projectName = testCase.getProject().getRepoName();
+
+        UpdateFilePayload updateFilePayload = new UpdateFilePayload()
+                .fileName(testCaseId + ".yml")
+                .message("Update file " + testCaseId)
+                .content(YamlUtils.toYaml(testCaseMapper.toTestCaseDTO(payload)))
+                .committer(payload.getCommitter());
+
+        FileDTO fileDTO = fileService.updateFileUsingPUT(projectName, updateFilePayload);
+
+        PullRequestDTO pullRequestDTO = new PullRequestDTO()
+                .branchName(fileDTO.getBranch())
+                .title("Review for " + fileDTO.getFileName());
+
+        PullRequestResponse pullRequest = pullRequestService.createPullRequestUsingPOST(pullRequestDTO, projectName);
+
+        Review review = createReview(testCase, fileDTO, pullRequest);
+        testCase.addReview(review);
+
+        reviewRepository.save(review);
+
+        return review;
+    }
 
     public Optional<TestCase> getTestCaseById(Long id) {
         return testCaseRepository.findById(id);
@@ -77,12 +101,7 @@ public class TestCaseService {
 
         testCaseRepository.save(testCase);
 
-        Review review = new Review();
-        review.setTestCase(testCase);
-        review.setBranch(fileDTO.getBranch());
-        review.setPath(fileDTO.getPath());
-        review.setDiff(pullRequest.getDiffText());
-        review.setPullRequestId(pullRequest.getId());
+        Review review = createReview(testCase, fileDTO, pullRequest);
 
         testCase.addReview(review);
 
@@ -90,4 +109,16 @@ public class TestCaseService {
 
         return review;
     }
+
+    private Review createReview(TestCase testCase, FileDTO fileDTO, PullRequestResponse pullRequest) {
+        Review review = new Review();
+        review.setTestCase(testCase);
+        review.setBranch(fileDTO.getBranch());
+        review.setPath(fileDTO.getPath());
+        review.setDiff(pullRequest.getDiffText());
+        review.setPullRequestId(pullRequest.getId());
+
+        return review;
+    }
+
 }
