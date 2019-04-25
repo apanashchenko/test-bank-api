@@ -1,5 +1,6 @@
 package com.test.bank.mapper;
 
+import com.test.bank.dto.TestCaseDTO;
 import com.test.bank.model.TestCase;
 import com.test.bank.payload.CreateTestCasePayload;
 import org.mapstruct.Mapper;
@@ -8,4 +9,5 @@ import org.mapstruct.Mapper;
 public interface TestCaseMapper {
 
     TestCase toTestCase(CreateTestCasePayload payload);
+    TestCaseDTO toTestCaseDTO(TestCase testCase);
 }

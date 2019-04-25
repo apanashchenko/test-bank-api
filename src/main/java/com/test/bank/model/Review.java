@@ -22,5 +22,6 @@ public class Review {
     private Integer pullRequestId;
     @Column(length = 10000)
     private String diff;
-
+    private String branch;
+    private String path;
 }

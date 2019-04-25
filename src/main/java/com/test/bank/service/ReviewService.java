@@ -17,4 +17,7 @@ public class ReviewService {
         return reviewRepository.findAllByTestCaseId(id);
     }
 
+    public Review findReviewById(Long id) {
+        return reviewRepository.findById(id).get();
+    }
 }
