@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
 public interface ProjectMapper {
     ProjectMapper MAPPER = Mappers.getMapper(ProjectMapper.class);
 
-    ProjectDTO toProjectDto(Project project);
+    com.test.bank.dto.ProjectDTO toProjectDto(Project project);
     Project toProject(ProjectDTO projectDTO);
 
 }

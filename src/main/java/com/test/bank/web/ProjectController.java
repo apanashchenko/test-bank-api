@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.test.bank.ControllerKeyConstants.ID_KEY;
@@ -27,7 +28,7 @@ public class ProjectController {
     }
 
     @GetMapping(value = "/projects")
-    public List<ProjectDTO> getAllProjects() {
+    public List<com.test.bank.dto.ProjectDTO> getAllProjects() {
         return projectsService.getAllProjects();
     }
 
@@ -49,6 +50,11 @@ public class ProjectController {
     public ResponseEntity deleteProject(@PathVariable Long id) {
         projectsService.deleteProject(id);
         return new ResponseEntity<>(singletonMap(STATUS_KEY, "Deleted"), OK);
+    }
+
+    @GetMapping("/project/{id}/labels")
+    public List<String> getProjectLabels(@PathVariable Long id){
+        return Arrays.asList("SMOKE", "REGRESSION","AUTOMATED", "MANUAL");
     }
 }
 

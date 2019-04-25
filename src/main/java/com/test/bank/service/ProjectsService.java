@@ -3,7 +3,6 @@ package com.test.bank.service;
 import com.test.bank.mapper.ProjectMapper;
 import com.test.bank.model.Project;
 import com.test.bank.repository.ProjectsRepository;
-import com.test.bank.response.InitRepoResponse;
 import io.swagger.client.api.ProjectControllerApi;
 import io.swagger.client.model.InitProjectResponse;
 import io.swagger.client.model.ProjectDTO;
@@ -40,7 +39,7 @@ public class ProjectsService {
         return id;
     }
 
-    public List<ProjectDTO> getAllProjects() {
+    public List<com.test.bank.dto.ProjectDTO> getAllProjects() {
         Iterable<Project> projects = projectsRepository.findAll();
         return StreamSupport
                 .stream(projects.spliterator(), false)
