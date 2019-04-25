@@ -1,8 +1,10 @@
 package com.test.bank.web;
 
+import com.test.bank.dto.TestCaseDTO;
 import com.test.bank.model.Review;
 import com.test.bank.model.TestCase;
 import com.test.bank.payload.CreateTestCasePayload;
+import com.test.bank.payload.UpdateTestCasePayload;
 import com.test.bank.service.ReviewService;
 import com.test.bank.service.TestCaseService;
 import io.swagger.client.model.Committer;
@@ -43,12 +45,10 @@ public class TestCaseController {
         return reviewService.getAllReviewsForTestCase(id);
     }
 
-
-//
-//    @PutMapping("/case")
-//    public TestCase updateTestCase(@RequestBody TestCaseDTO testCaseDTO) {
-//        return testCaseService.updateTestCase(testCaseDTO);
-//    }
+    @PutMapping("/case/{testCaseId}/update")
+    public Review updateTestCase(@PathVariable Long testCaseId, @RequestBody UpdateTestCasePayload payload) {
+        return testCaseService.updateTestCase(testCaseId, payload);
+    }
 
     @GetMapping("/case/{id}")
     public TestCase getTestCaseById(@PathVariable Long id) {
