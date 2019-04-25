@@ -79,6 +79,8 @@ public class TestCaseService {
 
         Review review = new Review();
         review.setTestCase(testCase);
+        review.setBranch(fileDTO.getBranch());
+        review.setPath(fileDTO.getPath());
         review.setDiff(pullRequest.getDiffText());
         review.setPullRequestId(pullRequest.getId());
 
